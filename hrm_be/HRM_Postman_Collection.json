@@ -1,0 +1,3821 @@
+{
+  "info": {
+    "_postman_id": "hrm-api-collection-2024",
+    "name": "HRM API Collection",
+    "description": "HRM System API Collection - Organized by modules",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "auth", "login"]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set(\"accessToken\", jsonData.accessToken);",
+                  "    if (jsonData.refreshToken) {",
+                  "        pm.environment.set(\"refreshToken\", jsonData.refreshToken);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "auth", "logout"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout All",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/auth/logoutAll",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "auth", "logoutAll"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/auth/refresh",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "auth", "refresh"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Activate Account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"activation_token_here\",\n  \"password\": \"new_password\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/auth/activate",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "auth", "activate"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Attendance",
+      "item": [
+        {
+          "name": "Attendance",
+          "item": [
+            {
+              "name": "Get All Attendance",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/attendance?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "attendance"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Attendance Detail",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/attendance/{{attendanceId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "attendance", "{{attendanceId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Attendance By SubDepartment",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/attendance/sub-department/{{subDepartmentId}}?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "attendance", "sub-department", "{{subDepartmentId}}"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Scan Face (Check-in/out)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "/path/to/face/image.jpg"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/attendance/scan",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "attendance", "scan"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Break Time",
+          "item": [
+            {
+              "name": "Create Break",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attendanceId\": \"attendance_id\",\n  \"breakType\": \"LUNCH\",\n  \"startTime\": \"12:00:00\",\n  \"endTime\": \"13:00:00\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/breaks",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "breaks"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Break Batch",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subDepartmentId\": \"sub_dept_id\",\n  \"breakType\": \"LUNCH\",\n  \"startTime\": \"12:00:00\",\n  \"endTime\": \"13:00:00\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/breaks/batch",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "breaks", "batch"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Break",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attendanceId\": \"attendance_id\",\n  \"breakType\": \"LUNCH\",\n  \"startTime\": \"12:00:00\",\n  \"endTime\": \"13:00:00\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/breaks/{{breakId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "breaks", "{{breakId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Break",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/breaks/{{breakId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "breaks", "{{breakId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Breaks By Attendance",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/breaks/attendance/{{attendanceId}}?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "breaks", "attendance", "{{attendanceId}}"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "OT Rate",
+          "item": [
+            {
+              "name": "Create OT Rate",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"otType\": \"WEEKDAY\",\n  \"rate\": 1.5,\n  \"effectiveDate\": \"2024-01-01\",\n  \"expiryDate\": \"2024-12-31\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/ot-rates",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "ot-rates"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update OT Rate",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"otType\": \"WEEKDAY\",\n  \"rate\": 2.0,\n  \"effectiveDate\": \"2024-01-01\",\n  \"expiryDate\": \"2024-12-31\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/ot-rates/{{otRateId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "ot-rates", "{{otRateId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete OT Rate",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/ot-rates/{{otRateId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "ot-rates", "{{otRateId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get OT Rate By ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/ot-rates/{{otRateId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "ot-rates", "{{otRateId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All OT Rates",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/ot-rates",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "ot-rates"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Search OT Rate By Date and Type",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/ot-rates/search?date=2024-01-15&type=WEEKDAY",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "ot-rates", "search"],
+                  "query": [
+                    {
+                      "key": "date",
+                      "value": "2024-01-15"
+                    },
+                    {
+                      "key": "type",
+                      "value": "WEEKDAY"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Contract",
+      "item": [
+        {
+          "name": "Contract",
+          "item": [
+            {
+              "name": "Create Contract",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"employee_id\",\n  \"contractType\": \"FULL_TIME\",\n  \"startDate\": \"2024-01-01\",\n  \"endDate\": \"2024-12-31\",\n  \"baseSalary\": 10000000\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contract",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contract"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Contract",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contractType\": \"FULL_TIME\",\n  \"startDate\": \"2024-01-01\",\n  \"endDate\": \"2024-12-31\",\n  \"baseSalary\": 12000000\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contract/{{contractId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contract", "{{contractId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Active Contracts",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contract?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contract"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Contract By ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contract/{{contractId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contract", "{{contractId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Not Active Contracts",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contract/not-active?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contract", "not-active"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Approve Contract",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contract/{{contractId}}/approve?newStatus=ACTIVE",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contract", "{{contractId}}", "approve"],
+                  "query": [
+                    {
+                      "key": "newStatus",
+                      "value": "ACTIVE"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Import Contracts",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "/path/to/contracts.xlsx"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contract/import",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contract", "import"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Upload Contract Files",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "/path/to/contract_files.zip"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contract/upload-files",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contract", "upload-files"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Export Contracts",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contract/export",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contract", "export"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Allowance",
+          "item": [
+            {
+              "name": "Create Allowance",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Transport Allowance\",\n  \"amount\": 500000,\n  \"description\": \"Monthly transport allowance\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/allowances",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "allowances"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Allowances",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/allowances",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "allowances"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Allowance By ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/allowances/{{allowanceId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "allowances", "{{allowanceId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Allowance",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Transport Allowance\",\n  \"amount\": 600000,\n  \"description\": \"Updated transport allowance\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/allowances/{{allowanceId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "allowances", "{{allowanceId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Allowance",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/allowances/{{allowanceId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "allowances", "{{allowanceId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Import Allowances",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "/path/to/allowances.xlsx"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/allowances/import",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "allowances", "import"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Export Allowances",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/allowances/export",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "allowances", "export"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Allowance Rule",
+          "item": [
+            {
+              "name": "Create Allowance Rule",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"salaryContractId\": \"salary_contract_id\",\n  \"allowanceId\": \"allowance_id\",\n  \"amount\": 500000\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/allowance-rules",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "allowance-rules"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Salary Adjustment",
+          "item": [
+            {
+              "name": "Create Salary Adjustment",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"employee_id\",\n  \"adjustmentType\": \"BONUS\",\n  \"amount\": 1000000,\n  \"reason\": \"Performance bonus\",\n  \"effectiveDate\": \"2024-01-15\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/salary-adjustments",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "salary-adjustments"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Salary Adjustment",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"employee_id\",\n  \"adjustmentType\": \"BONUS\",\n  \"amount\": 1500000,\n  \"reason\": \"Updated performance bonus\",\n  \"effectiveDate\": \"2024-01-15\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/salary-adjustments/{{adjustmentId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "salary-adjustments", "{{adjustmentId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Salary Adjustment",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/salary-adjustments/{{adjustmentId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "salary-adjustments", "{{adjustmentId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Adjustments By Employee",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/salary-adjustments/employee/{{employeeId}}?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "salary-adjustments", "employee", "{{employeeId}}"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Adjustments For Payroll",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/salary-adjustments/employee/{{employeeId}}/range?startDate=2024-01-01&endDate=2024-01-31",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "salary-adjustments", "employee", "{{employeeId}}", "range"],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "2024-01-01"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2024-01-31"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Salary Contract",
+          "item": [
+            {
+              "name": "Create Salary Contract",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"employee_id\",\n  \"baseSalary\": 15000000,\n  \"effectiveDate\": \"2024-01-01\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/salary-contract",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "salary-contract"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Salary Contracts By Employee",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/salary-contract/employee/{{employeeId}}?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "salary-contract", "employee", "{{employeeId}}"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Salary Contract",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"employee_id\",\n  \"baseSalary\": 18000000,\n  \"effectiveDate\": \"2024-01-01\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/salary-contract/{{salaryContractId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "salary-contract", "{{salaryContractId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Salary Contract",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/salary-contract/{{salaryContractId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "salary-contract", "{{salaryContractId}}"]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Employee",
+      "item": [
+        {
+          "name": "Employee",
+          "item": [
+            {
+              "name": "Get All Employees",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/employees?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "employees"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Employee By ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/employees/{{employeeId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "employees", "{{employeeId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Employee",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fullName\": \"Nguyen Van A\",\n  \"email\": \"nguyenvana@example.com\",\n  \"phone\": \"0901234567\",\n  \"dateOfBirth\": \"1990-01-01\",\n  \"gender\": \"MALE\",\n  \"positionId\": \"position_id\",\n  \"subDepartmentId\": \"sub_dept_id\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/employees",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "employees"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Employee",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fullName\": \"Nguyen Van A\",\n  \"email\": \"nguyenvana@example.com\",\n  \"phone\": \"0901234567\",\n  \"dateOfBirth\": \"1990-01-01\",\n  \"gender\": \"MALE\",\n  \"positionId\": \"position_id\",\n  \"subDepartmentId\": \"sub_dept_id\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/employees/{{employeeId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "employees", "{{employeeId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Employee",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/employees/{{employeeId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "employees", "{{employeeId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Import Employees",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "/path/to/employees.xlsx"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/employees/import",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "employees", "import"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Import or Update Employees",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "/path/to/employees.xlsx"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/employees/import-or-update",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "employees", "import-or-update"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Import Employee Files",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "/path/to/employee_files.zip"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/employees/import-files",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "employees", "import-files"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Export Employees",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/employees/export",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "employees", "export"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Address",
+          "item": [
+            {
+              "name": "Get All Addresses",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/addresses?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "addresses"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Address By ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/addresses/{{addressId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "addresses", "{{addressId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Address",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"street\": \"123 Nguyen Trai\",\n  \"wardId\": \"ward_id\",\n  \"districtId\": \"district_id\",\n  \"provinceId\": \"province_id\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/addresses",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "addresses"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Address",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"street\": \"456 Le Loi\",\n  \"wardId\": \"ward_id\",\n  \"districtId\": \"district_id\",\n  \"provinceId\": \"province_id\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/addresses/{{addressId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "addresses", "{{addressId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Address",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/addresses/{{addressId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "addresses", "{{addressId}}"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Contact",
+          "item": [
+            {
+              "name": "Create Contact",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"employee_id\",\n  \"contactType\": \"PHONE\",\n  \"value\": \"0901234567\",\n  \"isPrimary\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contacts",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contacts"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Contacts",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contacts?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contacts"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Contact By ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contacts/{{contactId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contacts", "{{contactId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Contact",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"employee_id\",\n  \"contactType\": \"EMAIL\",\n  \"value\": \"email@example.com\",\n  \"isPrimary\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contacts/{{contactId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contacts", "{{contactId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Contact",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/contacts/{{contactId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "contacts", "{{contactId}}"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Location",
+          "item": [
+            {
+              "name": "Province",
+              "item": [
+                {
+                  "name": "Create Province",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"Ha Noi\",\n  \"code\": \"HN\"\n}"
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/provinces",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "provinces"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get All Provinces",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/provinces",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "provinces"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get Province By ID",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/provinces/{{provinceId}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "provinces", "{{provinceId}}"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Update Province",
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"Ha Noi Updated\",\n  \"code\": \"HN\"\n}"
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/provinces/{{provinceId}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "provinces", "{{provinceId}}"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Delete Province",
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/provinces/{{provinceId}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "provinces", "{{provinceId}}"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "District",
+              "item": [
+                {
+                  "name": "Create District",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"Quan 1\",\n  \"code\": \"Q1\",\n  \"provinceId\": \"province_id\"\n}"
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/districts",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "districts"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get All Districts",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/districts",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "districts"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get District By ID",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/districts/{{districtId}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "districts", "{{districtId}}"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get Districts By Province",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/districts/province/{{provinceId}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "districts", "province", "{{provinceId}}"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Update District",
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"Quan 1 Updated\",\n  \"code\": \"Q1\",\n  \"provinceId\": \"province_id\"\n}"
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/districts/{{districtId}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "districts", "{{districtId}}"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Delete District",
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/districts/{{districtId}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "districts", "{{districtId}}"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Ward",
+              "item": [
+                {
+                  "name": "Create Ward",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"Phuong Ben Nghe\",\n  \"code\": \"PBN\",\n  \"districtId\": \"district_id\"\n}"
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/wards",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "wards"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get All Wards",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/wards",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "wards"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get Ward By ID",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/wards/{{wardId}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "wards", "{{wardId}}"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get Wards By District",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/wards/district/{{districtId}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "wards", "district", "{{districtId}}"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Update Ward",
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"Phuong Ben Nghe Updated\",\n  \"code\": \"PBN\",\n  \"districtId\": \"district_id\"\n}"
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/wards/{{wardId}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "wards", "{{wardId}}"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Delete Ward",
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}{{apiPrefix}}/wards/{{wardId}}",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["{{apiPrefix}}", "wards", "{{wardId}}"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Face Recognition",
+      "item": [
+        {
+          "name": "Register Face",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": ["/path/to/face1.jpg", "/path/to/face2.jpg"]
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/employees/{{employeeId}}/faces",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "employees", "{{employeeId}}", "faces"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recognize Face",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/path/to/face.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/employees/faces/recognize",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "employees", "faces", "recognize"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Face",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": ["/path/to/face1.jpg", "/path/to/face2.jpg"]
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/employees/{{employeeId}}/faces",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "employees", "{{employeeId}}", "faces"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Face",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/employees/{{employeeId}}/faces",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "employees", "{{employeeId}}", "faces"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register Face Batch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/path/to/faces.zip"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/employees/faces/batch",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "employees", "faces", "batch"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "File",
+      "item": [
+        {
+          "name": "Upload File",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/path/to/file.pdf"
+                },
+                {
+                  "key": "refType",
+                  "value": "EMPLOYEE",
+                  "type": "text"
+                },
+                {
+                  "key": "refId",
+                  "value": "employee_id",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Employee document",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/files/upload",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "files", "upload"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Download File",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/files/download/{{fileId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "files", "download", "{{fileId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete File",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/files/{{fileId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "files", "{{fileId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Leave",
+      "item": [
+        {
+          "name": "Leave Request",
+          "item": [
+            {
+              "name": "Create Leave Request",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"employee_id\",\n  \"leaveType\": \"ANNUAL\",\n  \"startDate\": \"2024-02-01\",\n  \"endDate\": \"2024-02-03\",\n  \"reason\": \"Personal reason\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/leave-requests",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "leave-requests"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Leave Request",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"employee_id\",\n  \"leaveType\": \"ANNUAL\",\n  \"startDate\": \"2024-02-05\",\n  \"endDate\": \"2024-02-07\",\n  \"reason\": \"Updated personal reason\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/leave-requests/{{leaveId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "leave-requests", "{{leaveId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Approve Leave Request",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"APPROVED\",\n  \"comment\": \"Approved by manager\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/leave-requests/{{leaveId}}/approve",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "leave-requests", "{{leaveId}}", "approve"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Leave Request By ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/leave-requests/{{leaveId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "leave-requests", "{{leaveId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Leave Requests",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/leave-requests?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "leave-requests"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Leave Requests By Status",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/leave-requests/list?page=0&size=10&status=PENDING",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "leave-requests", "list"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "status",
+                      "value": "PENDING"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Export Leave Requests",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/leave-requests/export?subDepartmentId={{subDepartmentId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "leave-requests", "export"],
+                  "query": [
+                    {
+                      "key": "subDepartmentId",
+                      "value": "{{subDepartmentId}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Import Leave Requests",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "/path/to/leave_requests.xlsx"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/leave-requests/import",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "leave-requests", "import"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Leave Balance",
+          "item": [
+            {
+              "name": "Get My Leave Balance",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/leave-balance/me?year=2024",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "leave-balance", "me"],
+                  "query": [
+                    {
+                      "key": "year",
+                      "value": "2024"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Organization",
+      "item": [
+        {
+          "name": "Department",
+          "item": [
+            {
+              "name": "Create Department",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"IT Department\",\n  \"code\": \"IT\",\n  \"description\": \"Information Technology Department\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/departments",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "departments"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Departments",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/departments",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "departments"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Department By ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/departments/{{departmentId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "departments", "{{departmentId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Department",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"IT Department Updated\",\n  \"code\": \"IT\",\n  \"description\": \"Updated description\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/departments/{{departmentId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "departments", "{{departmentId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Department",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/departments/{{departmentId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "departments", "{{departmentId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Import Departments",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "/path/to/departments.xlsx"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/departments/import",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "departments", "import"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Export Departments",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/departments/export",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "departments", "export"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Sub Department",
+          "item": [
+            {
+              "name": "Create Sub Department",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Software Development\",\n  \"code\": \"SD\",\n  \"departmentId\": \"department_id\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/sub-departments",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "sub-departments"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Sub Departments",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/sub-departments",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "sub-departments"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Sub Department By ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/sub-departments/{{subDepartmentId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "sub-departments", "{{subDepartmentId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Sub Departments By Department",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/sub-departments/department/{{departmentId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "sub-departments", "department", "{{departmentId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Sub Department",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Software Development Updated\",\n  \"code\": \"SD\",\n  \"departmentId\": \"department_id\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/sub-departments/{{subDepartmentId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "sub-departments", "{{subDepartmentId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Sub Department",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/sub-departments/{{subDepartmentId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "sub-departments", "{{subDepartmentId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Import Sub Departments",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "/path/to/sub_departments.xlsx"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/sub-departments/import",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "sub-departments", "import"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Export Sub Departments",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/sub-departments/export",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "sub-departments", "export"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Position",
+          "item": [
+            {
+              "name": "Create Position",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Software Engineer\",\n  \"code\": \"SE\",\n  \"description\": \"Develop software applications\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/positions",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "positions"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Positions",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/positions",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "positions"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Position By ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/positions/{{positionId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "positions", "{{positionId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Position",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Senior Software Engineer\",\n  \"code\": \"SSE\",\n  \"description\": \"Senior developer role\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/positions/{{positionId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "positions", "{{positionId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Import Positions",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "/path/to/positions.xlsx"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/positions/import",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "positions", "import"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Export Positions",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/positions/export",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "positions", "export"]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Payroll",
+      "item": [
+        {
+          "name": "Payroll",
+          "item": [
+            {
+              "name": "Create Payroll",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"employee_id\",\n  \"month\": 1,\n  \"year\": 2024\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/payroll/create",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "payroll", "create"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Payroll For All Employees",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/payroll?month=1&year=2024",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "payroll"],
+                  "query": [
+                    {
+                      "key": "month",
+                      "value": "1"
+                    },
+                    {
+                      "key": "year",
+                      "value": "2024"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Payrolls",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/payroll?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "payroll"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Payroll By Employee",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/payroll/{{employeeId}}?year=2024&month=1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "payroll", "{{employeeId}}"],
+                  "query": [
+                    {
+                      "key": "year",
+                      "value": "2024"
+                    },
+                    {
+                      "key": "month",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Approve Payroll",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"month\": 1,\n  \"year\": 2024,\n  \"status\": \"APPROVED\",\n  \"comment\": \"Approved by HR\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/payroll/approval",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "payroll", "approval"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Payroll By Status",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/payroll/list?month=1&year=2024&status=DRAFT",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "payroll", "list"],
+                  "query": [
+                    {
+                      "key": "month",
+                      "value": "1"
+                    },
+                    {
+                      "key": "year",
+                      "value": "2024"
+                    },
+                    {
+                      "key": "status",
+                      "value": "DRAFT"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Payroll List By Employee",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/payroll/employee/{{employeeId}}?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "payroll", "employee", "{{employeeId}}"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Payroll By Month",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/payroll/month?month=1&year=2024&page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "payroll", "month"],
+                  "query": [
+                    {
+                      "key": "month",
+                      "value": "1"
+                    },
+                    {
+                      "key": "year",
+                      "value": "2024"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Payroll Detail By ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/payroll/detail/{{payrollId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "payroll", "detail", "{{payrollId}}"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Payroll Cycle",
+          "item": [
+            {
+              "name": "Create Payroll Cycle",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"startDate\": 1,\n  \"endDate\": 31,\n  \"payDate\": 5\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/payroll-cycles",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "payroll-cycles"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Active Payroll Cycle",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/payroll-cycles/active",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "payroll-cycles", "active"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Payroll Cycle History",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/payroll-cycles/history",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "payroll-cycles", "history"]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Penalty",
+      "item": [
+        {
+          "name": "Create Penalty Rule",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Late Arrival\",\n  \"penaltyType\": \"LATE\",\n  \"amount\": 50000,\n  \"description\": \"Penalty for being late\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/penalty-rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "penalty-rules"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Penalty Rule",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Late Arrival Updated\",\n  \"penaltyType\": \"LATE\",\n  \"amount\": 100000,\n  \"description\": \"Updated penalty\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/penalty-rules/{{penaltyRuleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "penalty-rules", "{{penaltyRuleId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Penalty Rule",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/penalty-rules/{{penaltyRuleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "penalty-rules", "{{penaltyRuleId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Penalty Rule By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/penalty-rules/{{penaltyRuleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "penalty-rules", "{{penaltyRuleId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Penalty Rules",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/penalty-rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "penalty-rules"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Active Penalty Rules",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{apiPrefix}}/penalty-rules/active/list",
+              "host": ["{{baseUrl}}"],
+              "path": ["{{apiPrefix}}", "penalty-rules", "active", "list"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "User Account",
+          "item": [
+            {
+              "name": "Create User Account",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"employee_id\",\n  \"username\": \"username\",\n  \"roleIds\": [\"role_id\"]\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/user-accounts",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "user-accounts"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create User Account Auto",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/user-accounts/auto/{{employeeId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "user-accounts", "auto", "{{employeeId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All User Accounts",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/user-accounts?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "user-accounts"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get User Account By ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/user-accounts/{{userAccountId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "user-accounts", "{{userAccountId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update User Account",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"employee_id\",\n  \"username\": \"updated_username\",\n  \"roleIds\": [\"role_id\"]\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/user-accounts/{{userAccountId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "user-accounts", "{{userAccountId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete User Account",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/user-accounts/{{userAccountId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "user-accounts", "{{userAccountId}}"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Role",
+          "item": [
+            {
+              "name": "Create Role",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"HR Manager\",\n  \"code\": \"HR_MANAGER\",\n  \"description\": \"HR Department Manager\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/roles",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "roles"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Roles",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/roles?page=0&size=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "roles"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Role By ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/roles/{{roleId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "roles", "{{roleId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Role",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"HR Manager Updated\",\n  \"code\": \"HR_MANAGER\",\n  \"description\": \"Updated description\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/roles/{{roleId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "roles", "{{roleId}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Role",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}{{apiPrefix}}/roles/{{roleId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{apiPrefix}}", "roles", "{{roleId}}"]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "System",
+      "item": [
+        {
+          "name": "Hello",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/hello",
+              "host": ["{{baseUrl}}"],
+              "path": ["hello"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test Email",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dev/mail/test?to=test@example.com",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "dev", "mail", "test"],
+              "query": [
+                {
+                  "key": "to",
+                  "value": "test@example.com"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8081"
+    },
+    {
+      "key": "apiPrefix",
+      "value": "/api/v1"
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "refreshToken",
+      "value": ""
+    },
+    {
+      "key": "employeeId",
+      "value": "your_employee_id"
+    },
+    {
+      "key": "departmentId",
+      "value": "your_department_id"
+    },
+    {
+      "key": "subDepartmentId",
+      "value": "your_sub_department_id"
+    },
+    {
+      "key": "positionId",
+      "value": "your_position_id"
+    },
+    {
+      "key": "contractId",
+      "value": "your_contract_id"
+    },
+    {
+      "key": "salaryContractId",
+      "value": "your_salary_contract_id"
+    },
+    {
+      "key": "allowanceId",
+      "value": "your_allowance_id"
+    },
+    {
+      "key": "adjustmentId",
+      "value": "your_adjustment_id"
+    },
+    {
+      "key": "attendanceId",
+      "value": "your_attendance_id"
+    },
+    {
+      "key": "breakId",
+      "value": "your_break_id"
+    },
+    {
+      "key": "otRateId",
+      "value": "your_ot_rate_id"
+    },
+    {
+      "key": "leaveId",
+      "value": "your_leave_id"
+    },
+    {
+      "key": "payrollId",
+      "value": "your_payroll_id"
+    },
+    {
+      "key": "penaltyRuleId",
+      "value": "your_penalty_rule_id"
+    },
+    {
+      "key": "roleId",
+      "value": "your_role_id"
+    },
+    {
+      "key": "userAccountId",
+      "value": "your_user_account_id"
+    },
+    {
+      "key": "fileId",
+      "value": "your_file_id"
+    },
+    {
+      "key": "provinceId",
+      "value": "your_province_id"
+    },
+    {
+      "key": "districtId",
+      "value": "your_district_id"
+    },
+    {
+      "key": "wardId",
+      "value": "your_ward_id"
+    },
+    {
+      "key": "addressId",
+      "value": "your_address_id"
+    },
+    {
+      "key": "contactId",
+      "value": "your_contact_id"
+    }
+  ]
+}

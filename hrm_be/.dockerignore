@@ -1,0 +1,55 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+*.iml
+*.ipr
+*.iws
+.vscode
+*.swp
+*.swo
+
+# Build output
+target
+!target/*.jar
+build
+
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+*.log
+logs
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test
+src/test
+
+# Documentation
+*.md
+API_*.md
+*.xlsx
+*.json
+
+# Scripts
+*.ps1
+*.sh
+
+# Uploads (will be created at runtime)
+uploads/*
+!uploads/.gitkeep
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*
+
+# Others
+*.md
+LICENSE

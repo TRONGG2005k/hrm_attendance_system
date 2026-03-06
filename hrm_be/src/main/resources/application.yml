@@ -1,0 +1,167 @@
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:pro}
+
+
+
+---
+server:
+  port: ${SERVER_PORT:8080}
+  forward-headers-strategy: framework
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/hrm_db}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:123456}
+    driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
+    hikari:
+      maximum-pool-size: ${DB_POOL_MAX_SIZE:10}
+      minimum-idle: ${DB_POOL_MIN_IDLE:5}
+      idle-timeout: ${DB_POOL_IDLE_TIMEOUT:300000}
+      max-lifetime: ${DB_POOL_MAX_LIFETIME:1200000}
+      connection-timeout: ${DB_POOL_CONNECTION_TIMEOUT:30000}
+      keepalive-time: ${DB_POOL_KEEPALIVE_TIME:300000}
+      validation-timeout: ${DB_POOL_VALIDATION_TIMEOUT:5000}
+
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    show-sql: ${JPA_SHOW_SQL:false}
+
+  servlet:
+    multipart:
+      max-file-size: ${UPLOAD_MAX_FILE_SIZE:50MB}
+      max-request-size: ${UPLOAD_MAX_REQUEST_SIZE:50MB}
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    protocol: ${MAIL_PROTOCOL:smtp}
+    properties:
+      mail.smtp.auth: ${MAIL_SMTP_AUTH:true}
+      mail.smtp.starttls.enable: ${MAIL_SMTP_STARTTLS_ENABLE:true}
+
+app:
+  cookie:
+    secure: ${COOKIE_SECURE:false}
+    same-site: ${COOKIE_SAME_SITE:Lax}
+
+  upload:
+    dir: ${UPLOAD_DIR:./uploads}
+    max-size: ${UPLOAD_MAX_SIZE:52428800}
+
+  api-prefix: ${API_PREFIX:/api/v1}
+
+  jwt:
+    signerKeyAccess: ${JWT_SIGNER_KEY_ACCESS:}
+    signerKeyRefresh: ${JWT_SIGNER_KEY_REFRESH:}
+    signerKeyActivation: ${JWT_SIGNER_KEY_ACTIVATION:}
+    valid-duration: ${JWT_ACCESS_DURATION:900}
+    refreshable-duration: ${JWT_REFRESH_DURATION:2592000}
+    activation-duration: ${JWT_ACTIVATION_DURATION:900}
+
+  mail:
+    baseUrl: ${MAIL_BASE_URL:http://localhost:5173/active-account}
+
+face-recognition:
+  base-url: ${FACE_RECOGNITION_BASE_URL:http://127.0.0.1:8000}
+  endpoints:
+    register: ${FACE_RECOGNITION_REGISTER_API:/facial-recognition/register-face}
+    recognize: ${FACE_RECOGNITION_RECOGNIZE_API:/facial-recognition/face-recognition}
+    update: ${FACE_RECOGNITION_UPDATE_API:/facial-recognition/update-face}
+    delete: ${FACE_RECOGNITION_DELETE_API:/facial-recognition/delete-face}
+    register-batch: ${FACE_RECOGNITION_REGISTER_BATCH_API:/facial-recognition/register-face-batch}
+
+---
+server:
+  port: ${SERVER_PORT:8081}
+  forward-headers-strategy: framework
+spring:
+  config:
+    activate:
+      on-profile: pro
+
+  datasource:
+    url: ${DB_URL:jdbc:mysql://gateway01.ap-southeast-1.prod.aws.tidbcloud.com:4000/hrm_db?sslMode=REQUIRED&connectionTimeZone=UTC&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:2iMchjBKLaDT6d1.root}
+    password: ${DB_PASSWORD:h5TimlkTOUWLcFJ7}
+    driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
+    hikari:
+      maximum-pool-size: ${DB_POOL_MAX_SIZE:5}
+      minimum-idle: ${DB_POOL_MIN_IDLE:1}
+      idle-timeout: ${DB_POOL_IDLE_TIMEOUT:300000}
+      max-lifetime: ${DB_POOL_MAX_LIFETIME:1200000}
+      connection-timeout: ${DB_POOL_CONNECTION_TIMEOUT:30000}
+      keepalive-time: ${DB_POOL_KEEPALIVE_TIME:300000}
+      validation-timeout: ${DB_POOL_VALIDATION_TIMEOUT:5000}
+
+  redis:
+    host: ${REDIS_HOST:redis-11881.crce178.ap-east-1-1.ec2.cloud.redislabs.com}
+    port: ${REDIS_PORT:11881}
+    password: ${REDIS_PASSWORD:JCMjZDjohtR5Jt81x1GyiHFHtQy4Y5pJ}
+
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:none}
+      jdbc:
+        time_zone: UTC
+    show-sql: ${JPA_SHOW_SQL:false}
+  jackson:
+    time-zone: UTC
+
+  servlet:
+    multipart:
+      max-file-size: ${UPLOAD_MAX_FILE_SIZE:50MB}
+      max-request-size: ${UPLOAD_MAX_REQUEST_SIZE:50MB}
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    protocol: ${MAIL_PROTOCOL:smtp}
+    properties:
+      mail.smtp.auth: ${MAIL_SMTP_AUTH:true}
+      mail.smtp.starttls.enable: ${MAIL_SMTP_STARTTLS_ENABLE:true}
+
+app:
+  cookie:
+    secure: ${COOKIE_SECURE:true}
+    same-site: ${COOKIE_SAME_SITE:None}
+
+  upload:
+    dir: ${UPLOAD_DIR:./uploads}
+    max-size: ${UPLOAD_MAX_SIZE:52428800}
+
+  api-prefix: ${API_PREFIX:/api/v1}
+
+  jwt:
+    signerKeyAccess: ${JWT_SIGNER_KEY_ACCESS:1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij}
+    signerKeyRefresh: ${JWT_SIGNER_KEY_REFRESH:cbd90562e6d653c6779c233efcb3288b2342c62cfddd8c4ba67eca36d79d2b38}
+    signerKeyActivation: ${JWT_SIGNER_KEY_ACTIVATION:7c7f1375fdc9f16e2b2143cc9eddb315c0837118de48551baeeb0d62feca745b}
+    valid-duration: ${JWT_ACCESS_DURATION:900}
+    refreshable-duration: ${JWT_REFRESH_DURATION:2592000}
+    activation-duration: ${JWT_ACTIVATION_DURATION:900}
+
+  mail:
+    baseUrl: ${MAIL_BASE_URL:}
+
+face-recognition:
+  base-url: ${FACE_RECOGNITION_BASE_URL:}
+  endpoints:
+    register: ${FACE_RECOGNITION_REGISTER_API:/facial-recognition/register-face}
+    recognize: ${FACE_RECOGNITION_RECOGNIZE_API:/facial-recognition/face-recognition}
+    update: ${FACE_RECOGNITION_UPDATE_API:/facial-recognition/update-face}
+    delete: ${FACE_RECOGNITION_DELETE_API:/facial-recognition/delete-face}
+    register-batch: ${FACE_RECOGNITION_REGISTER_BATCH_API:/facial-recognition/register-face-batch}
