@@ -24,7 +24,7 @@ The system separates business logic and biometric processing into independent se
 ---
 ## 🌍 Live Demo
 
-🔗 Web Admin: https://hrm-db.duckdns.org/
+🔗 Web Admin: https://hrm-app.duckdns.org/
 
 Test account:
 - Username: admin
